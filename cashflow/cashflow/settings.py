@@ -27,16 +27,33 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['8000-reecesmith14-cashflow-abfnv1tctxe.ws.codeinstitute-ide.net']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-reecesmith14-cashflow-abfnv1tctxe.ws.codeinstitute-ide.net'
+]
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True  # This ensures each email is unique across accounts.
+
+
+LOGIN_REDIRECT_URL = '/dashboard/' 
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'dashboard',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.apple',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -47,9 +64,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
-ROOT_URLCONF = 'CashFlow.urls'
+ROOT_URLCONF = 'cashflow.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +85,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CashFlow.wsgi.application'
+WSGI_APPLICATION = 'cashflow.wsgi.application'
 
 
 # Database
@@ -121,3 +139,54 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+    
+]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth-based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    },
+    'apple': {
+        'APPS': [{
+            # Your service identifier.
+            'client_id': 'your.service.id',
+
+            # The Key ID (visible in the "View Key Details" page).
+            'secret': 'KEYID',
+
+            # Member ID/App ID Prefix -- you can find it below your name
+            # at the top right corner of the page, or it’s your App ID
+            # Prefix in your App ID.
+            'key': 'MEMAPPIDPREFIX',
+
+            'settings': {
+                # The certificate you downloaded when generating the key.
+                'certificate_key': """-----BEGIN PRIVATE KEY-----
+s3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr
+3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3cr3ts3
+c3ts3cr3t
+-----END PRIVATE KEY-----"""
+            }
+        }]
+    }
+}
+
+
