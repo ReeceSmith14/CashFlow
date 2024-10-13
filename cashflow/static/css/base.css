@@ -1,3 +1,43 @@
+a#brand{
+    font-family: "Lilita One", sans-serif;
+    font-size:2rem;
+}
+
+body{
+    font-family: "Roboto", sans-serif !important;
+    max-width: 1440px;
+    margin: 0 auto !important
+}
+
+.nav-item{
+  font-size:1.2rem;
+}
+
+.dropdown-menu {
+  right: 0 !important; 
+  left: auto !important; 
+}
+
+.underline-hover {
+    display: inline-block;
+    position: relative;
+  }
+
+  .underline-hover::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    transition: width 0.3s;
+  }
+
+  .underline-hover:hover::after {
+    width: 100%;
+  }
+
 footer {
     background-color: #343a40;
     color: white;
