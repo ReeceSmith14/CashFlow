@@ -7,6 +7,8 @@ Homepage
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static '../static/css/home.css' %}">
+<!--ScrollReveal plugin-->
+<script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -43,22 +45,22 @@ Homepage
 <!-- Testimonials Section -->
 <section class="bg-light py-5">
     <div class="container">
-        <h2 class="text-center mb-4">What Our Users Say</h2>
+        <h2 class="text-center mb-4 testimonials">What Our Users Say</h2>
         <div class="row">
             <div class="col-md-4">
-                <blockquote class="blockquote">
+                <blockquote class="blockquote testimonials">
                     <p class="mb-0">CashFlow has transformed the way I manage my money. Highly recommend!</p>
                     <footer class="blockquote-footer">Alex, Freelancer</footer>
                 </blockquote>
             </div>
             <div class="col-md-4">
-                <blockquote class="blockquote">
+                <blockquote class="blockquote testimonials">
                     <p class="mb-0">A simple and effective tool for tracking expenses and setting budgets.</p>
                     <footer class="blockquote-footer">Jordan, Entrepreneur</footer>
                 </blockquote>
             </div>
             <div class="col-md-4">
-                <blockquote class="blockquote">
+                <blockquote class="blockquote testimonials">
                     <p class="mb-0">Love the interface and ease of use. CashFlow keeps me on track every month.</p>
                     <footer class="blockquote-footer">Taylor, Student</footer>
                 </blockquote>
@@ -68,7 +70,7 @@ Homepage
 </section>
 
 <!-- Call to Action Section -->
-<section class="cta-section">
+<section class="cta-section testimonials">
     <div class="container">
         <h2>Ready to Take Charge of Your Finances?</h2>
         <p class="lead">Sign up today and start managing your money like a pro!</p>
@@ -76,4 +78,8 @@ Homepage
     </div>
 </section>
 
+{% endblock %}
+
+{% block js %}
+<script src="{% static '../static/js/home.js' %}"></script>
 {% endblock %}

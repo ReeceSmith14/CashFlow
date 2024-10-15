@@ -1,0 +1,1 @@
+ScrollReveal().reveal('.testimonials', {delay:300, reset: true, interval: 16});
