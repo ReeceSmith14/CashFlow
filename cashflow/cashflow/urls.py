@@ -24,6 +24,4 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('allauth.socialaccount.urls')),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('google-login/', views.google_login_by_token, name='google_login_by_token'),
-    
 ]
