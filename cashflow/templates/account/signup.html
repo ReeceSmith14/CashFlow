@@ -6,6 +6,13 @@
     {% trans "Signup" %}
 {% endblock %}
 
+{% block head %}
+<script src="//accounts.google.com/gsi/client" async></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id" content="657201700921-8h9k6nneeppehtf1rhd4nu8osbiunvdm.apps.googleusercontent.com">
+
+{% endblock %}
+
 
 {% block content %}
 <div class="container my-5">
@@ -60,9 +67,10 @@
                         </div>
                     {% endif %}
 
-                    {% if SOCIALACCOUNT_ENABLED %}
-                    {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-                    {% endif %}
+                
+                    
+                    
+
                 </div>
             </div>
         </div>

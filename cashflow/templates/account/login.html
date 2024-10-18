@@ -1,61 +1,74 @@
-{% extends "account/base_entrance.html" %}
-{% load i18n %}
-{% load allauth account %}
-{% block head_title %}
+{% extends 'base.html' %}
+{% load allauth i18n %}
+{% load static %}
+
+{% block title %}
     {% trans "Sign In" %}
-{% endblock head_title %}
-{% block content %}
-    {% element h1 %}
-        {% trans "Sign In" %}
-    {% endelement %}
-    {% if not SOCIALACCOUNT_ONLY %}
-        {% setvar link %}
-            <a href="{{ signup_url }}">
-            {% endsetvar %}
-            {% setvar end_link %}
-            </a>
-        {% endsetvar %}
-        {% element p %}
-            {% blocktranslate %}If you have not created an account yet, then please {{ link }}sign up{{ end_link }} first.{% endblocktranslate %}
-        {% endelement %}
-        {% url 'account_login' as login_url %}
-        {% element form form=form method="post" action=login_url tags="entrance,login" %}
-            {% slot body %}
-                {% csrf_token %}
-                {% element fields form=form unlabeled=True %}
-                {% endelement %}
-                {{ redirect_field }}
-            {% endslot %}
-            {% slot actions %}
-                {% element button type="submit" tags="prominent,login" %}
-                    {% trans "Sign In" %}
-                {% endelement %}
-            {% endslot %}
-        {% endelement %}
-    {% endif %}
-    {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
-        {% element hr %}
-        {% endelement %}
-        {% element button_group vertical=True %}
-            {% if PASSKEY_LOGIN_ENABLED %}
-                {% element button type="submit" form="mfa_login" id="passkey_login" tags="prominent,login,outline,primary" %}
-                    {% trans "Sign in with a passkey" %}
-                {% endelement %}
-            {% endif %}
-            {% if LOGIN_BY_CODE_ENABLED %}
-                {% element button href=request_login_code_url tags="prominent,login,outline,primary" %}
-                    {% trans "Mail me a sign-in code" %}
-                {% endelement %}
-            {% endif %}
-        {% endelement %}
-    {% endif %}
-    {% if SOCIALACCOUNT_ENABLED %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-    {% endif %}
-{% endblock content %}
-{% block extra_body %}
-    {{ block.super }}
-    {% if PASSKEY_LOGIN_ENABLED %}
-        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
-    {% endif %}
 {% endblock %}
+
+{% block head %}
+<script src="//accounts.google.com/gsi/client" async></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id" content="657201700921-8h9k6nneeppehtf1rhd4nu8osbiunvdm.apps.googleusercontent.com">
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">{% trans "Sign In" %}</h1>
+
+                    <p class="text-center">
+                        Don't have an account? 
+                        <a href="{% url 'account_signup' %}" class="text-primary">sign up</a>
+                    </p>
+
+                    {% if not SOCIALACCOUNT_ONLY %}
+                        {% url 'account_login' as action_url %}
+                        <form method="post" action="{{ action_url }}" class="mt-4">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="mb-3 d-flex flex-column justify-content-center checkbox-container">
+                                    <!-- Add class directly to the label -->
+                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                    <!-- Add class directly to the field (input) -->
+                                    <input type="{{ field.field.widget.input_type }}" 
+                                           name="{{ field.name }}" 
+                                           id="{{ field.id_for_label }}" 
+                                           class="form-control"
+                                           value="{{ field.value|default:'' }}">
+                            
+                                           
+                                    {% if field.errors %}
+                                        <div class="text-danger small">{{ field.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            {{ redirect_field }}
+
+                            <!-- Use d-flex for alignment -->
+                            <div class="d-flex justify-content-center">
+                                <!-- Smaller button that doesn't take full width -->
+                                <button type="submit" class="btn btn-primary mt-3">
+                                    {% trans "Sign In" %}
+                                </button>
+                            </div>
+                        </form>
+                    {% endif %}
+
+                    {% if PASSKEY_SIGNIN_ENABLED %}
+                        <hr class="my-4">
+                        <div class="d-grid">
+                            <a href="{{ signin_by_passkey_url }}" class="btn btn-outline-primary btn-block">
+                                {% trans "Sign in using a passkey" %}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -46,3 +46,11 @@ footer {
 footer a {
     color: #ffffff;
 }
+
+
+#id_remember{
+  width:40px;
+  text-align: center;
+  margin: left 50%;
+  margin:auto;
+}
